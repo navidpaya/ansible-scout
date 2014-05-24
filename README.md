@@ -13,3 +13,7 @@ the site.yml file to your needs. You just need to run it like this:
 Or like this if you want to mention your host group on the command line:
 
 	ansible-playbook -i hosts site.yml
+
+## Problem or Questions?
+
+You can open an issue and I'll do my best to get back to you ASAP.
