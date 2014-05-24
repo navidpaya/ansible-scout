@@ -1,0 +1,57 @@
+---
+- name: Add the scout user
+  user: name=scout home=/home/scout shell=/bin/bash
+
+- name: Create the directory for the public key
+  file: path=/home/scout/.scout state=directory
+
+- name: Copy scout_rsa.pub to the /home/scout/.scout directory
+  copy: src=scout_rsa.pub dest=/home/scout/.scout
+
+- name: Set the proper permissions for .scout
+  action: file path=/home/scout/.scout/ mode=0700 owner=scout group=scout
+
+- name: Set the proper permissions for .scout
+  action: file path=/home/scout/.scout/scout_rsa.pub mode=0400 owner=scout group=scout
+
+- name: Install prerequisite packages
+  action: apt pkg={{item}} state=installed
+  with_items:
+    - sysstat
+    - sudo
+    - ruby
+    - rubygems
+  when: ansible_os_family == 'Debian'
+  
+- name: Install prerequisite packages
+  action: yum pkg={{item}} state=installed
+  with_items:
+    - sysstat
+    - sudo
+    - ruby
+    - rubygems
+  when: ansible_os_family == 'RedHat'
+
+- name: Install the scout gem
+  gem: name=scout state=present user_install=no
+
+- name: Add the node to scoutapp.com
+  command: "scout install {{ scout_key }} --hostname {{ ansible_fqdn }}"
+  sudo: yes
+  sudo_user: scout
+
+- name: Make sure the cron service is running
+  action: service name=cron state=started
+  when: ansible_os_family == 'Debian'
+
+- name: Make sure the cron service is running
+  action: service name=crond state=started
+  when: ansible_os_family == 'Redhat'
+
+- name: Copy the cron job for scout
+  action: template src=scout_debian.j2 dest=/etc/cron.d/scout
+  when: ansible_os_family == 'Debian'
+
+- name: Copy the cron job for scout
+  action: template src=scout_redhat.j2 dest=/etc/cron.d/scout
+  when: ansible_os_family == 'RedHat'

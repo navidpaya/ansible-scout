@@ -1,0 +1,10 @@
+---
+# This playbook deploys the scout agent and installs/configures the rest of the needed pieces.
+# Make sure you place your scout key in here.
+
+- hosts: host_group
+  user: random_user
+  roles:
+    - scout_agent
+  vars:
+     scout_key: xxxxxxxxxxxxxxxxxxxxxxxxxx
