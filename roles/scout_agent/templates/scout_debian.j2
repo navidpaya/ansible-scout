@@ -1,1 +1,1 @@
-* * * * * scout /usr/local/bin/scout {{ scout_key }}  --hostname "{{ ansible_fqdn }}" -e {{ hostvars[inventory_hostname]['environment'] }}
+* * * * * {{ scout_user }} /usr/local/bin/scout {{ scout_key }}  --hostname "{{ ansible_fqdn }}" -e {{ hostvars[inventory_hostname]['environment'] }}

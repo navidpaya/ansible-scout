@@ -7,4 +7,5 @@
   roles:
     - scout_agent
   vars:
-     scout_key: xxxxxxxxxxxxxxxxxxxxxxxxxx
+    scout_key: xxxxxxxxxxxxxxxxxxxxxxxxxx
+    scout_user: xxxxx

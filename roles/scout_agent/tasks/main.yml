@@ -1,18 +1,19 @@
 ---
 - name: Add the scout user
-  user: name=scout home=/home/scout shell=/bin/bash
+  user: name={{ scout_user }} home=/home/{{ scout_user }} shell=/bin/bash
 
 - name: Create the directory for the public key
-  file: path=/home/scout/.scout state=directory
+  file: path=/home/{{ scout_user }}/.scout
+          state=directory
 
-- name: Copy scout_rsa.pub to the /home/scout/.scout directory
-  copy: src=scout_rsa.pub dest=/home/scout/.scout
-
-- name: Set the proper permissions for .scout
-  action: file path=/home/scout/.scout/ mode=0700 owner=scout group=scout
+- name: Copy scout_rsa.pub to the /home/{{ scout_user }}/.scout directory
+  copy: src=scout_rsa.pub dest=/home/{{ scout_user }}/.scout
 
 - name: Set the proper permissions for .scout
-  action: file path=/home/scout/.scout/scout_rsa.pub mode=0400 owner=scout group=scout
+  action: file path=/home/{{ scout_user }}/.scout/ mode=0700 owner={{ scout_user }} group={{ scout_user }}
+
+- name: Set the proper permissions for .scout
+  action: file path=/home/{{ scout_user }}/.scout/scout_rsa.pub mode=0400 owner={{ scout_user }} group={{ scout_user }}
 
 - name: Install prerequisite packages
   action: apt pkg={{item}} state=installed
@@ -38,7 +39,7 @@
 - name: Add the node to scoutapp.com
   command: "scout install {{ scout_key }} --hostname {{ ansible_fqdn }}"
   sudo: yes
-  sudo_user: scout
+  sudo_user: {{ scout_user }}
 
 - name: Make sure the cron service is running
   action: service name=cron state=started
