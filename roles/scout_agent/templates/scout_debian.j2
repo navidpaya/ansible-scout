@@ -1,1 +1,1 @@
-* * * * * {{ scout_user }} /usr/local/bin/scout {{ scout_key }}  --hostname "{{ ansible_fqdn }}" -e {{ hostvars[inventory_hostname]['environment'] }}
+* * * * * {{ scout_user }} /usr/local/bin/scout {{ scout_key }} {% if hostvars[inventory_hostname]['name'] is defined %} -n {{ hostvars[inventory_hostname]['name'] }}{% endif -%} {% if hostvars[inventory_hostname]['environment'] is defined %} -e {{ hostvars[inventory_hostname]['environment'] }}{% endif -%} {% if hostvars[inventory_hostname]['roles'] is defined %} -r {{ hostvars[inventory_hostname]['roles'] }}{% endif -%}

@@ -36,11 +36,6 @@
 - name: Install the scout gem
   gem: name=scout state=present user_install=no
 
-- name: Add the node to scoutapp.com
-  command: "scout install {{ scout_key }} --hostname {{ ansible_fqdn }}"
-  sudo: yes
-  sudo_user: {{ scout_user }}
-
 - name: Make sure the cron service is running
   action: service name=cron state=started
   when: ansible_os_family == 'Debian'
