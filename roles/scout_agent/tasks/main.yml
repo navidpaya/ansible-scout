@@ -1,4 +1,8 @@
 ---
+- name: Checking for required variables
+  fail: msg="Bailing out. A scout_key is required." 
+  when: scout_key is not defined 
+
 - name: Add the scout user
   user: name={{ scout_user }} home=/home/{{ scout_user }} shell=/bin/bash
 

@@ -2,7 +2,7 @@
 
 Installs the agent for [Scout](http://scoutapp.com), a hosted server monitoring service, using [Ansible](https://github.com/ansible/ansible).
 
-This playbook deploys the Scout agent on your servers:
+This playbook deploys the Scout agent on your hosts:
 
 * Installs the [Scout Ruby gem](https://rubygems.org/gems/scout)
 * Configures a Cron job to run the monitoring agent
@@ -19,15 +19,19 @@ The following platforms are supported by this playblook, meaning that the playbo
 
 ## Basic Setup
 
-You just need to pass a host or a host group to it. Take a look
-at the sample hosts.ini to get an idea. Also make sure you adjust
-the site.yml file to your needs. You just need to run it like this:
+Provide your account key in the "scout_key" variable in `site.yml`, then:
 
 	ansible-playbook site.yml
 
 Or like this if you want to mention your host group on the command line:
 
 	ansible-playbook -i hosts site.yml
+
+See `hosts.sample.ini` for a sample inventory file w/Scout.
+
+## Scout Roles
+
+Scout configures monitoring by role names - these are specified via the `roles` variable name. You define monitoring roles in the Scout UI, then assign them in your inventory file. When a role is changed in the Scout UI, the monitoring configuration is immediately updated for all hosts with that role.
 
 ## Required Varibles
 
@@ -69,17 +73,17 @@ Or like this if you want to mention your host group on the command line:
     </tr>
     <tr>
       <td>:name</td>
-      <td>Optional name to display for this node within the Scout UI.</td>
+      <td>Optional name to display for this host within the Scout UI.</td>
       <td><code>nil</code></td>
     </tr>
         <tr>
       <td>:environment</td>
-      <td>Optional environment to group this node under in the Scout UI.</td>
+      <td>Optional environment to group this host under in the Scout UI.</td>
       <td><code>nil</code></td>
     </tr>
     <tr>
       <td>:roles</td>
-      <td>A comma-separated list of roles for this node. Roles are defined through Scout's UI.</td>
+      <td>A comma-separated list of roles for host node. Roles are defined through Scout's UI.</td>
       <td><code>nil</code></td>
     </tr>
   </tbody>
