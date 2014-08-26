@@ -1,4 +1,8 @@
 ---
+- name: Checking for required variables
+  fail: msg="Bailing out. A scout_key is required." 
+  when: scout_key is not defined 
+
 - name: Add the scout user
   user: name={{ scout_user }} home=/home/{{ scout_user }} shell=/bin/bash
 
@@ -35,11 +39,6 @@
 
 - name: Install the scout gem
   gem: name=scout state=present user_install=no
-
-- name: Add the node to scoutapp.com
-  command: "scout install {{ scout_key }} --hostname {{ ansible_fqdn }}"
-  sudo: yes
-  sudo_user: {{ scout_user }}
 
 - name: Make sure the cron service is running
   action: service name=cron state=started
